@@ -122,3 +122,12 @@ RUN pecl install redis-3.1.6 \
     && apt-get install -y libmemcached-dev zlib1g-dev \
     && pecl install memcached-3.0.4 \
     && docker-php-ext-enable memcached
+	
+# phalcon
+COPY ./cphalcon-3.2.4.tar.gz /tmp/
+RUN cd /tmp/ \
+	&& tar -xzf cphalcon-3.2.4.tar.gz \
+	&& cd /tmp/cphalcon-3.2.4/build \
+	&& ./install \
+	&& cp ../tests/_ci/phalcon.ini $(php-config --configure-options | grep -o "with-config-file-scan-dir=\([^ ]*\)" | awk -F'=' '{print $2}')
+#	&&docker-php-ext-enable phalcon
